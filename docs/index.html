@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<!--
+
+Double Pendulum Web Experiment
+
+Source repository (at time of writing):
+https://github.com/tommccracken/DoublePendulum
+
+
+Copyright 2018 Thomas O. McCracken
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+-->
+
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Double Pendulum Web Experiment">
+  <title>Double Pendulum Web Experiment</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles/custom_styles.css">
+
+</head>
+
+<body style="background-color: #87a6fd;">
+
+  <nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <div class="container">
+          <a class="navbar-brand text-center center-block" href="#">Double Pendulum</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div style="margin-top: -25px;">
+    <div class="container">
+      <p class="text-center">
+        <br />
+        <br />An physics web experiment by
+        <a href="http://tommccracken.net">Tom McCracken</a>.
+        <br />
+        <br />
+      </p>
+      <canvas id="SketchCanvas" width="0" height="0" style="margin: auto; display: block;"></canvas>
+      <p>
+        <br>
+      </p>
+      <div class="text-center">
+        <form role="form" class="form-inline">
+          <button id="randomise" type="button" class="btn btn-primary">Randomise</button>
+          <button id="ResumePause" type="button" class="btn btn-primary">Resume</button>
+          <button id="Step" type="button" class="btn btn-primary disabled">Step</button>
+        </form>
+        <div class="checkbox">
+          <label>
+            <input id="debug_checkbox" type="checkbox" value="">Display debug information</label>
+        </div>
+      </div>
+      <p>
+        <br>
+      </p>
+      <p class="text-center">
+        <a href="https://github.com/tommccracken/DoublePendulum">Link</a> to GitHub repository containing source, demonstration/documentation (this page) and license for use.
+        <br
+        />
+        <br /> This is a simple  <a href="https://en.wikipedia.org/wiki/Double_pendulum">double pendulum</a> simulation experiment. The simulation currently uses a Euler numerical integration
+        method which is not effective at conserving energy.
+        <br />
+        <br />
+      </p>
+    </div>
+  </div>
+
+  <footer>
+    <p class="text-center">&copy; Copyright Thomas O. McCracken 2018</p>
+  </footer>
+
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="./scripts/DoublePendulum.ES5.min.js"></script>
+  <script type="text/javascript" src="./scripts/DoublePendulumDemoScenes.js"></script>
+  <script type="text/javascript" src="./scripts/DoublePendulumDemo.js"></script>
+
+</body>
+
+</html>
