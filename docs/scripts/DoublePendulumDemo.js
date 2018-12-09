@@ -43,8 +43,10 @@ var paused;
 var debounce;
 
 function get_time() {
+
   //return performance.now();
   return Date.now();
+
 }
 
 function draw_world() {
@@ -99,7 +101,9 @@ function draw_world() {
 
 }
 
+// Main application loop
 function app_loop() {
+
   if (!paused) {
     draw_world();
     time_now = get_time();
@@ -111,68 +115,63 @@ function app_loop() {
     time_prev = get_time();
     window.requestAnimationFrame(app_loop);
   }
+
 }
 
 function resize_canvas() {
+
   // Resize the canvas element to suit the current viewport size/shape
   var viewport_width = $(window).width();
   var viewport_height = $(window).height();
   draw_size = Math.round(0.80 * Math.min(viewport_width, 0.85 * viewport_height));
   ctx.canvas.height = draw_size;
   ctx.canvas.width = draw_size;
+  $('#max-width-box').width(draw_size);
+
   // Recalculate the draw scaling factor
   draw_scaling_factor = draw_size / world_size;
+
   // Draw the world
   draw_world();
+
 }
 
 function initilise() {
-  // Load default scene and calculate initial energy states and mass positions
-  scenes[0][1].call();
-  double_pendulum.Ep = -(double_pendulum.m1 + double_pendulum.m2) * double_pendulum.g * double_pendulum.l1 * Math.cos(double_pendulum.theta1) - double_pendulum.m2 * double_pendulum.g * double_pendulum.l2 * Math.cos(double_pendulum.theta2);
-  double_pendulum.Ek = 0;
-  double_pendulum.Et = double_pendulum.Ek + double_pendulum.Ep;
-  double_pendulum.m1x = double_pendulum.l1 * Math.sin(double_pendulum.theta1);
-  double_pendulum.m1y = -double_pendulum.l1 * Math.cos(double_pendulum.theta1);
-  double_pendulum.m2x = double_pendulum.m1x + double_pendulum.l2 * Math.sin(double_pendulum.theta2);
-  double_pendulum.m2y = double_pendulum.m1y - double_pendulum.l2 * Math.cos(double_pendulum.theta2);
+
+  // Apply current initial conditions to pendulum model
+  world_size = 7;
+  double_pendulum = new DoublePendulum();
+  double_pendulum.integration_method = $('#integration_method_select').prop('selectedIndex');
+  double_pendulum.m1 = 1;
+  double_pendulum.l1 = 1;
+  double_pendulum.theta1 = $('#theta1_select').val() * Math.PI / 180;
+  double_pendulum.omega1 = 0;
+  double_pendulum.alpha1 = 0;
+  double_pendulum.m2 = double_pendulum.m1 / $('#mass_ratio_select').val();
+  double_pendulum.l2 = double_pendulum.l1 / $('#length_ratio_select').val();
+  double_pendulum.theta2 = $('#theta2_select').val() * Math.PI / 180
+  double_pendulum.omega2 = 0;
+  double_pendulum.alpha2 = 0;
+
+  // Update pendulum energy states and mass cartesian positions
+  double_pendulum.update_energy_states();
+  double_pendulum.update_cartesian_mass_coordinates();
+
   // Resize the canvas
   resize_canvas();
+
   // Draw the world
   draw_world();
-  // Initialise the loop timing variables
+
+  // Initilise the loop timing variables
   time_now = get_time();
   time_prev = get_time();
   delta = 0;
+
   // Start the loop
   window.requestAnimationFrame(app_loop);
-}
 
-function randomise() {
-  // Load randomised scene and calculate initial energy states and mass positions
-  scenes[1][1].call();
-  double_pendulum.Ep = -(double_pendulum.m1 + double_pendulum.m2) * double_pendulum.g * double_pendulum.l1 * Math.cos(double_pendulum.theta1) - double_pendulum.m2 * double_pendulum.g * double_pendulum.l2 * Math.cos(double_pendulum.theta2);
-  double_pendulum.Ek = 0;
-  double_pendulum.Et = double_pendulum.Ek + double_pendulum.Ep;
-  double_pendulum.m1x = double_pendulum.l1 * Math.sin(double_pendulum.theta1);
-  double_pendulum.m1y = -double_pendulum.l1 * Math.cos(double_pendulum.theta1);
-  double_pendulum.m2x = double_pendulum.m1x + double_pendulum.l2 * Math.sin(double_pendulum.theta2);
-  double_pendulum.m2y = double_pendulum.m1y - double_pendulum.l2 * Math.cos(double_pendulum.theta2);
-  // Resize the canvas
-  resize_canvas();
-  // Draw the world
-  draw_world();
-  // Initialise the loop timing variables
-  time_now = get_time();
-  time_prev = get_time();
-  delta = 0;
-  // Start the loop
-  window.requestAnimationFrame(app_loop);
 }
-
-$('#randomise').on('click', function (e) {
-  randomise();
-});
 
 $('#ResumePause').on('click', function (e) {
   if (paused) {
@@ -193,6 +192,26 @@ $('#ResumePause').on('click', function (e) {
 $('#Step').on('click', function (e) {
   double_pendulum.update();
   draw_world();
+});
+
+$('#Reset').on('click', function (e) {
+  double_pendulum.m2 = double_pendulum.m1 / $('#mass_ratio_select').val();
+  double_pendulum.l22 = double_pendulum.l1 / $('#length_ratio_select').val();
+  double_pendulum.theta1 = $('#theta1_select').val();
+  double_pendulum.theta2 = $('#theta2_select').val();
+  initilise();
+});
+
+$('#Random').on('click', function (e) {
+  $('#mass_ratio_select').prop('selectedIndex', Math.floor(Math.random() * ($('#mass_ratio_select').prop('length'))));
+  $('#length_ratio_select').prop('selectedIndex', Math.floor(Math.random() * ($('#length_ratio_select').prop('length'))));
+  $('#theta1_select').prop('selectedIndex', Math.floor(Math.random() * ($('#theta1_select').prop('length'))));
+  $('#theta2_select').prop('selectedIndex', Math.floor(Math.random() * ($('#theta2_select').prop('length'))));
+  initilise();
+});
+
+$('select').on('change', function () {
+  initilise();
 });
 
 $('#debug_checkbox').change(function () {
@@ -218,6 +237,12 @@ $(document).ready(function () {
   var button_width = $('#ResumePause').width();
   $('#ResumePause').text('Pause');
   $('#ResumePause').width(button_width);
-  // Initialise the scene
+  // Define default initial conditions
+  $('#mass_ratio_select').val(1);
+  $('#length_ratio_select').val(1);
+  $('#theta1_select').val(120);
+  $('#theta2_select').val(120);
+  $('#integration_method_select').prop('selectedIndex', 2);
+  // Initilise the scene
   initilise();
 });

@@ -6,6 +6,4 @@ This web experiment is a simple simulation of a [double pendulum](https://en.wik
 
 [Link](https://github.com/tommccracken/DoublePendulum/)  to source repository.
 
-Note: The simulation currently uses a Euler numerical integration method which is not effective at conserving energy. 
-
 Copyright 2018 Thomas O. McCracken

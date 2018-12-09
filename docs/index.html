@@ -32,72 +32,189 @@ limitations under the License.
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Double Pendulum Web Experiment">
   <title>Double Pendulum Web Experiment</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
   <link rel="stylesheet" href="styles/custom_styles.css">
 
 </head>
 
-<body style="background-color: #87a6fd;">
-
-  <nav class="navbar navbar-inverse navbar-static-top">
-    <div class="container">
-      <div class="navbar-header">
-        <div class="container">
-          <a class="navbar-brand text-center center-block" href="#">Double Pendulum</a>
-        </div>
-      </div>
-    </div>
+<body style="background-color: #343a40;">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-center">
+    <a class="navbar-brand" href="#">Double Pendulum</a>
   </nav>
-
-  <div style="margin-top: -25px;">
-    <div class="container">
-      <p class="text-center">
-        <br />
-        <br />An physics web experiment by
-        <a href="http://tommccracken.net">Tom McCracken</a>.
-        <br />
-        <br />
-      </p>
+  <div style="margin-top: -25px; background-color: #87a6fd;">
+    <div class="container text-center">
+      <br />
+      <br />
+      <br /> A physics web experiment by
+      <a href="http://tommccracken.net" class="RedText">Tom McCracken</a>.
+      <br />
+      <br />
+      <br />
       <canvas id="SketchCanvas" width="0" height="0" style="margin: auto; display: block;"></canvas>
-      <p>
-        <br>
-      </p>
-      <div class="text-center">
-        <form role="form" class="form-inline">
-          <button id="randomise" type="button" class="btn btn-primary">Randomise</button>
-          <button id="ResumePause" type="button" class="btn btn-primary">Resume</button>
-          <button id="Step" type="button" class="btn btn-primary disabled">Step</button>
+      <div id="max-width-box" class="text-center" style="margin: auto; display: block;">
+        <br/>
+        <br/>
+        <h4> Controls</h4>
+        <br/>
+        <button id="ResumePause" type="button" class="btn btn-primary">Resume</button>
+        <button id="Step" type="button" class="btn btn-primary disabled">Step</button>
+        <button id="Reset" type="button" class="btn btn-primary">Reset</button>
+        <button id="Random" type="button" class="btn btn-primary">Random</button>
+        <br/>
+        <br/>
+        <br/>
+        <h4> Initial conditions</h4>
+        <br/>
+        <form>
+          <label for="mass_ratio_label">Mass ratio m1/m2</label>
+          <select class="form-control" id="mass_ratio_select">
+            <option>0.5</option>
+            <option>0.67</option>
+            <option>0.8</option>
+            <option>1</option>
+            <option>1.25</option>
+            <option>1.5</option>
+            <option>2</option>
+          </select>
         </form>
-        <div class="checkbox">
-          <label>
-            <input id="debug_checkbox" type="checkbox" value="">Display debug information</label>
-        </div>
+        <br/>
+        <label for="length_ratio_label">Length ratio l1/l2</label>
+        <select class="form-control" id="length_ratio_select">
+          <option>0.5</option>
+          <option>0.67</option>
+          <option>0.8</option>
+          <option>1</option>
+          <option>1.25</option>
+          <option>1.5</option>
+          <option>2</option>
+        </select>
+        <br/>
+        <label for="theta1_label">Theta1</label>
+        <select class="form-control" id="theta1_select">
+          <option>0</option>
+          <option>15</option>
+          <option>30</option>
+          <option>45</option>
+          <option>60</option>
+          <option>75</option>
+          <option>90</option>
+          <option>105</option>
+          <option>120</option>
+          <option>135</option>
+          <option>150</option>
+          <option>165</option>
+          <option>180</option>
+          <option>195</option>
+          <option>210</option>
+          <option>225</option>
+          <option>240</option>
+          <option>255</option>
+          <option>270</option>
+          <option>285</option>
+          <option>300</option>
+          <option>315</option>
+          <option>330</option>
+          <option>345</option>
+          <option>360</option>
+        </select>
+        <br/>
+        <label for="theta2_label">Theta2</label>
+        <select class="form-control" id="theta2_select">
+          <option>0</option>
+          <option>15</option>
+          <option>30</option>
+          <option>45</option>
+          <option>60</option>
+          <option>75</option>
+          <option>90</option>
+          <option>105</option>
+          <option>120</option>
+          <option>135</option>
+          <option>150</option>
+          <option>165</option>
+          <option>180</option>
+          <option>195</option>
+          <option>210</option>
+          <option>225</option>
+          <option>240</option>
+          <option>255</option>
+          <option>270</option>
+          <option>285</option>
+          <option>300</option>
+          <option>315</option>
+          <option>330</option>
+          <option>345</option>
+          <option>360</option>
+        </select>
+        </form>
+        <br/>
+        <br/>
+        <h4> Simulation parameters</h4>
+        <br/>
+        <form>
+          <label for="integration_method_label">Numerical integration method</label>
+          <select class="form-control" id="integration_method_select">
+            <option>Euler (first order, non-symplectic)</option>
+            <option>Semi-implicit Euler (first order, symplectic)</option>
+            <option>Velocity Verlet (second order, symplectic)</option>
+          </select>
+          <br/>
+          <div class="checkbox">
+            <label>
+              <input id="debug_checkbox" type="checkbox" value="">&nbsp Display debug information</label>
+          </div>
+        </form>
       </div>
       <p>
         <br>
       </p>
-      <p class="text-center">
-        <a href="https://github.com/tommccracken/DoublePendulum">Link</a> to GitHub repository containing source, demonstration/documentation (this page) and license for use.
-        <br
-        />
-        <br /> This is a simple  <a href="https://en.wikipedia.org/wiki/Double_pendulum">double pendulum</a> simulation experiment. The simulation currently uses a Euler numerical integration
-        method which is not effective at conserving energy.
+      <h4 class="text-center"> Theory</h4>
+      <br />
+      <p class="text-left">
+        This is a simple
+        <a href="https://en.wikipedia.org/wiki/Double_pendulum" class="RedText">double pendulum</a> simulation experiment. Key pendulum parameters are outlined below. The simulation numerically
+        integrates the differential equations of motion for &#945&#8321 and &#945&#8322 in order to determine the pendulum
+        mass positions &#952&#8321 and &#952&#8322. These equations can be derived from the Euler-Lagrange differential equations
+        for &#952&#8321 and &#952&#8322, which can be formulated analytically from the double pendulum model as described
+        <a href="http://scienceworld.wolfram.com/physics/DoublePendulum.html" class="RedText">here</a>. The pendulum is rendered based on the calculated pendulum positions.
+        <br />
+        <br /> m&#8321: upper pendulum mass
+        <br /> m&#8322: lower pendulum mass
+        <br /> l&#8321: length of the link connecting m&#8321 to the pendulum anchor
+        <br /> l&#8322: length of the link connecting m&#8322 to m&#8321
+        <br /> &#952&#8321: the angular position of m&#8321 about the pendulum anchor
+        <br /> &#952&#8322: the angular position of m&#8322 about m&#8321
+        <br /> &#969&#8321: the angular velocity of m&#8321 about the pendulum anchor
+        <br /> &#969&#8322: the angular velocity of m&#8322 about m&#8321
+        <br /> &#945&#8321: the angular acceleration of m&#8321 about the pendulum anchor
+        <br /> &#945&#8322: the angular acceleration of m&#8322 about m&#8321
+        <br />
+        <br /> Note: The default integration scheme generally tends to loose energy over time; however, certain pendulum configurations
+        will cause the opposite effect to occur.
+        <br />
+        <br /> For this simulation, the equations for &#945&#8321 and &#945&#8322 were sourced from
+        <a href="http://www.physics.usyd.edu.au/~wheat/dpend_html/" class="RedText">here</a>.
+        <br />
         <br />
         <br />
       </p>
     </div>
   </div>
 
-  <footer>
-    <p class="text-center">&copy; Copyright Thomas O. McCracken 2018</p>
+  <footer class="text-center" style="color: #ffffec; padding-left: 20px; padding-right: 20px;">
+    <a href="https://github.com/tommccracken/DoublePendulum" class="RedText">Link</a> to GitHub repository containing source, demonstration/documentation (this page) and license for use.
+    <br />
+    <br />
+    <p>&copy; Copyright Thomas O. McCracken 2018</p>
   </footer>
 
-  </div>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh4IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
   <script type="text/javascript" src="./scripts/DoublePendulum.ES5.min.js"></script>
-  <script type="text/javascript" src="./scripts/DoublePendulumDemoScenes.js"></script>
   <script type="text/javascript" src="./scripts/DoublePendulumDemo.js"></script>
 
 </body>
